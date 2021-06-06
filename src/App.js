@@ -1,25 +1,45 @@
-import logo from './logo.svg';
 import './App.css';
+import * as tf from '@tensorflow/tfjs';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class BatchNorm extends tf.layers.Layer {
+  static className = 'BatchNorm';
+
+  // constructor(config) {
+	// 	super(config);
+	// }
+
+  call(x) {
+    return tf.batchNorm(x);
+	}
+
+  // static get className() {
+	// 	console.log(className);
+	//   return className;
+	// }
+}
+
+class App extends React.Component {
+  async componentDidMount() {
+    tf.serialization.registerClass(BatchNorm);
+    const model = await tf.loadLayersModel('tfjs_model/model.json');
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1>Sofa Recolor</h1>
+          <ol type="1">
+            <li>Make photo of sofa using camera</li>
+            <li>Select texture to use for recoloring</li>
+            <li>Observe results</li>
+          </ol>
+          <button>Enable camera</button>
+        </header>
+      </div>
+    );
+  }
 }
 
 export default App;
